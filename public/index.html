@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Storage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login page -->
+    <div id="loginPage" class="auth-page">
+        <h1>AI Prompt Storage</h1>
+        <h2>Вхід</h2>
+        <form id="loginForm">
+            <label for="loginUsername">Ім'я користувача:</label>
+            <input type="text" id="loginUsername" required>
+            <label for="loginPassword">Пароль:</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit">Увійти</button>
+        </form>
+        <p>Ще не маєте акаунту? <a href="#" id="toSignup">Реєстрація</a></p>
+    </div>
+
+    <!-- Signup page -->
+    <div id="signupPage" class="auth-page" style="display:none;">
+        <h1>AI Prompt Storage</h1>
+        <h2>Реєстрація</h2>
+        <form id="signupForm">
+            <label for="signupUsername">Ім'я користувача:</label>
+            <input type="text" id="signupUsername" required>
+            <label for="signupPassword">Пароль:</label>
+            <input type="password" id="signupPassword" required>
+            <label for="signupConfirm">Підтвердити пароль:</label>
+            <input type="password" id="signupConfirm" required>
+            <button type="submit">Зареєструватися</button>
+        </form>
+        <p>Вже маєте акаунт? <a href="#" id="toLogin">Увійти</a></p>
+    </div>
+
+    <!-- Main application page -->
+    <div id="appPage" style="display:none;">
+        <!-- App header with logo and global search -->
+        <header id="appHeader">
+            <h1 class="logo">AI Prompt Storage</h1>
+            <input type="text" id="globalSearchInput" placeholder="Пошук за назвою, тегами або генератором...">
+        </header>
+        <header class="app-header">
+            <h1>AI Prompt Storage</h1>
+            <div class="user-info">Вітаємо, <span id="usernameDisplay"></span>! <button id="logoutBtn">Вийти</button></div>
+        </header>
+        <div class="app-container">
+            <aside id="sidebar">
+                <h3 class="sidebar-heading">Промпти</h3>
+                <h4 class="sidebar-subheading">Генератори</h4>
+                <ul id="categoryList">
+                    <!-- Categories will be injected here -->
+                </ul>
+                <!-- Admin panel will appear here for admin user -->
+                <div id="adminPanel" class="admin-panel" style="display:none;">
+                    <h3>Панель адміністратора</h3>
+                    <form id="addCategoryForm">
+                        <input type="text" id="newCategoryInput" placeholder="Нова категорія…">
+                        <button type="submit">Додати категорію</button>
+                    </form>
+                    <ul id="adminCategoryList">
+                        <!-- List of categories for edit/delete -->
+                    </ul>
+                </div>
+                <!-- Navigation buttons for other sections -->
+                <div class="nav-buttons">
+                    <button id="storyModeBtn" class="story-btn">Історії</button>
+                    <button id="materialsBtn" class="materials-btn">Матеріали</button>
+                </div>
+            </aside>
+            <main id="mainContent">
+                <section id="add-entry">
+                    <h2>Додати новий промпт</h2>
+                    <form id="entryForm">
+                        <label for="generatorSelect">Генератор:</label>
+                        <select id="generatorSelect" required>
+                            <!-- options injected dynamically -->
+                        </select>
+                        <label for="promptText">Промпт:</label>
+                        <textarea id="promptText" rows="3" placeholder="Опишіть ідею..." required></textarea>
+                        <label for="imageInput">Зображення:</label>
+                        <input type="file" id="imageInput" accept="image/*">
+                        <label for="tagsInput">Хештеги (через кому):</label>
+                        <input type="text" id="tagsInput" placeholder="#auto, #nature">
+                        <button type="submit">Додати</button>
+                    </form>
+                </section>
+                <section id="search-section">
+                    <input type="text" id="searchInput" placeholder="Пошук по тексту або хештегах...">
+                </section>
+                <section id="entriesContainer">
+                    <!-- Entries will appear here -->
+                </section>
+
+                <!-- Story mode section -->
+                <section id="storySection" style="display:none;">
+                    <h2>Режим історії</h2>
+                    <div class="story-settings">
+                        <label for="storyScenario">Сценарій відео:</label>
+                        <textarea id="storyScenario" rows="4" placeholder="Опишіть загальний сценарій…"></textarea>
+                        <div class="story-customization">
+                            <label for="themeColorInput">Колір акценту:</label>
+                            <input type="color" id="themeColorInput" value="#5a5ce6">
+                        </div>
+                        <div class="story-controls">
+                            <button id="addSceneBtn" type="button">Додати сцену</button>
+                            <button id="saveStoryBtn" type="button">Зберегти історію</button>
+                        </div>
+                    </div>
+                    <!-- Timeline scale bar -->
+                    <div id="timelineScale" class="timeline-scale"></div>
+                    <div id="storyTimeline" class="story-timeline">
+                        <!-- Timeline scenes will be rendered here -->
+                    </div>
+                </section>
+                <!-- Materials section -->
+                <section id="materialsSection" style="display:none;">
+                    <h2>Навчальні матеріали</h2>
+                    <div class="materials-form">
+                        <label for="materialTitle">Назва матеріалу:</label>
+                        <input type="text" id="materialTitle" placeholder="Напр. Основи MidJourney" />
+                        <label for="materialType">Тип:</label>
+                        <select id="materialType">
+                            <option value="video">Відео</option>
+                            <option value="link">Посилання</option>
+                        </select>
+                        <label for="materialUrl">Посилання (URL):</label>
+                        <input type="url" id="materialUrl" placeholder="https://..." />
+                        <label for="materialTags">Теги (через кому):</label>
+                        <input type="text" id="materialTags" placeholder="#підказки, #уроки" />
+                        <button id="addMaterialBtn" type="button">Додати матеріал</button>
+                    </div>
+                    <div id="materialsContainer" class="materials-container">
+                        <!-- List of materials will be rendered here -->
+                    </div>
+                </section>
+            </main>
+        </div>
+        <!-- Modal for viewing full image and details -->
+        <div id="imageModal" class="modal">
+            <div class="modal-content-wrapper">
+                <span class="close" id="modalClose">&times;</span>
+                <div class="modal-image">
+                    <img id="modalImg" alt="Повнорозмірне зображення">
+                </div>
+                <div id="modalDetails" class="modal-details">
+                    <!-- Details will be inserted dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for adding scenes to story -->
+        <div id="sceneModal" class="modal">
+            <div class="modal-content-wrapper scene-modal-wrapper">
+                <span class="close" id="sceneModalClose">&times;</span>
+                <h3>Додати сцену</h3>
+                <div id="sceneModalContent" class="scene-modal-content">
+                    <!-- Existing entries will be listed here -->
+                </div>
+                <div class="new-scene-section">
+                    <h4>Створити нову сцену</h4>
+                    <label for="newSceneImage">Зображення:</label>
+                    <input type="file" id="newSceneImage" accept="image/*">
+                    <label for="newSceneTitle">Текст промпту/назва:</label>
+                    <input type="text" id="newSceneTitle" placeholder="Текст промпту...">
+                    <label for="newSceneVideoTitle">Назва для відео:</label>
+                    <input type="text" id="newSceneVideoTitle" placeholder="Назва для відео...">
+                    <label for="newSceneDuration">Тривалість (сек):</label>
+                    <input type="number" id="newSceneDuration" min="1" placeholder="Тривалість у секундах">
+                    <label for="newSceneAnimationPrompt">Промпт для анімації:</label>
+                    <input type="text" id="newSceneAnimationPrompt" placeholder="Промпт для анімації...">
+                    <button id="createSceneBtn" type="button">Додати сцену</button>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p>&copy; 2025 AI Prompt Storage. Всі права захищені.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
